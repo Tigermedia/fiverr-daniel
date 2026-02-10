@@ -48,6 +48,13 @@ This is a Fiverr Pro milestone-based project for client Daniel T. We are buildin
 - Client prefers written communication
 - 7 days post-delivery support included
 
+## Getting Started Form
+- **Live Form:** https://docs.tigermedia.co.il/forms/companycam-daniel/
+- **Purpose:** Collect all setup information before Milestone 1 begins
+- **Sections:** Contact Info, Account Setup, WordPress Access, Google Business, Project Preferences
+- **Integration:** n8n webhook → Notion DB → Telegram notifications
+- **Status:** Deployed and tested ✅
+
 ## Formatting Rules
 - Never use em dashes (--), only standard hyphens (-)
 - Client communications under 2,500 characters

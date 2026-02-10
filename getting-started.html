@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompanyCam Local SEO Automation - Getting Started</title>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-black: #1a1a2e;
+            --brand-pink: #fd4f6c;
+            --brand-orange: #E8651A;
+            --brand-accent: #fd4f6c;
+            --brand-accent-light: #ff6b7d;
+            --bg-primary: #fafafa;
+            --bg-card: #ffffff;
+            --bg-section: #f5f5f5;
+            --text-primary: #1a1a2e;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --border-color: #e5e7eb;
+            --border-focus: #fd4f6c;
+            --success-green: #22c55e;
+            --success-bg: #f0fdf4;
+            --error-red: #ef4444;
+            --error-bg: #fef2f2;
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+        [data-theme="dark"] {
+            --bg-primary: #0a0a0a;
+            --bg-card: #141414;
+            --bg-section: #1a1a1a;
+            --text-primary: #fafafa;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --border-color: #262626;
+            --border-focus: #ff6b7d;
+            --success-bg: #052e16;
+            --error-bg: #450a0a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Layout */
+        .page-layout { display: flex; min-height: 100vh; }
+
+        /* Side Nav */
+        .side-nav {
+            position: fixed; top: 0; left: 0;
+            width: 260px; height: 100vh;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            padding: 32px 0; overflow-y: auto; z-index: 50;
+            display: flex; flex-direction: column;
+        }
+        .side-nav-brand { padding: 0 24px 24px; border-bottom: 1px solid var(--border-color); margin-bottom: 16px; }
+        .side-nav-brand h2 { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; color: var(--brand-black); }
+        .side-nav-brand span { font-size: 0.75rem; color: var(--text-muted); }
+        .side-nav ul { list-style: none; padding: 0 12px; flex: 1; }
+        .side-nav li { margin-bottom: 2px; }
+        .side-nav a {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 12px; border-radius: var(--radius-sm);
+            color: var(--text-secondary); text-decoration: none;
+            font-size: 0.85rem; font-weight: 500; transition: all 0.15s;
+            cursor: pointer;
+        }
+        .side-nav a:hover { background: var(--bg-section); color: var(--text-primary); }
+        .side-nav a.active { background: rgba(253,79,108,0.08); color: var(--brand-accent); }
+        .side-nav a.completed { color: var(--success-green); }
+        .side-nav .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+        .side-nav .nav-status {
+            margin-left: auto; font-size: 11px; padding: 2px 8px;
+            border-radius: 100px; font-weight: 600;
+        }
+        .nav-status.done { background: var(--success-bg); color: var(--success-green); }
+        .nav-status.current { background: rgba(253,79,108,0.1); color: var(--brand-accent); }
+
+        .side-nav-footer {
+            padding: 16px 20px; border-top: 1px solid var(--border-color); background: var(--bg-card);
+        }
+        .save-btn {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 10px 16px;
+            background: var(--bg-section); color: var(--text-primary);
+            border: 1px solid var(--border-color); border-radius: var(--radius-sm);
+            font-family: inherit; font-size: 0.85rem; font-weight: 500;
+            cursor: pointer; transition: all 0.15s;
+        }
+        .save-btn:hover { border-color: var(--brand-accent); }
+        .save-btn.saved { color: var(--success-green); border-color: var(--success-green); }
+
+        /* Mobile */
+        .mobile-nav-toggle {
+            display: none; position: fixed; top: 16px; left: 16px; z-index: 100;
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm); width: 40px; height: 40px;
+            cursor: pointer; align-items: center; justify-content: center;
+            font-size: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .side-nav-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 40; }
+        @media (max-width: 900px) {
+            .side-nav { transform: translateX(-100%); transition: transform 0.25s ease; z-index: 60; }
+            .side-nav.open { transform: translateX(0); }
+            .side-nav-overlay.open { display: block; }
+            .mobile-nav-toggle { display: flex; }
+            .container { margin-left: 0 !important; max-width: 100% !important; padding: 60px 20px 40px !important; }
+        }
+
+        .container { max-width: 800px; margin-left: 260px; padding: 40px 40px 40px 48px; }
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: fixed; top: 20px; right: 20px; z-index: 100;
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 50%; width: 40px; height: 40px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 18px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .theme-toggle:hover { transform: scale(1.1); }
+
+        /* Progress bar */
+        .progress-bar { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: var(--border-color); z-index: 1000; }
+        .progress-fill { height: 100%; background: var(--brand-accent); width: 0%; transition: width 0.3s ease; }
+
+        /* Header */
+        .page-header { text-align: center; margin-bottom: 40px; padding-bottom: 28px; border-bottom: 1px solid var(--border-color); }
+        .page-header h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; color: var(--brand-black); }
+        .page-header .subtitle { font-size: 1rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto 16px; }
+        .page-header .note { font-size: 0.85rem; color: var(--text-muted); background: var(--bg-section); display: inline-block; padding: 8px 16px; border-radius: 100px; }
+
+        /* Step indicator */
+        .step-indicator {
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            margin-bottom: 32px; flex-wrap: wrap;
+        }
+        .step-dot {
+            width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; font-weight: 600; cursor: pointer;
+            border: 2px solid var(--border-color); color: var(--text-muted);
+            background: var(--bg-card); transition: all 0.2s;
+        }
+        .step-dot.active { border-color: var(--brand-accent); color: var(--brand-accent); background: rgba(253,79,108,0.08); }
+        .step-dot.done { border-color: var(--success-green); color: #fff; background: var(--success-green); }
+        .step-dot.done::after { content: '✓'; }
+        .step-line { width: 24px; height: 2px; background: var(--border-color); }
+        .step-line.done { background: var(--success-green); }
+
+        /* Form sections / steps */
+        .form-step { display: none; }
+        .form-step.active { display: block; }
+
+        .form-section {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: var(--radius); padding: 32px; margin-bottom: 24px;
+        }
+        .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+        .section-icon {
+            width: 42px; height: 42px; border-radius: var(--radius-sm);
+            background: var(--bg-section); display: flex; align-items: center;
+            justify-content: center; font-size: 20px; flex-shrink: 0;
+        }
+        .section-title { font-size: 1.15rem; font-weight: 600; letter-spacing: -0.01em; color: var(--brand-black); }
+        .section-subtitle { font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px; }
+
+        /* Fields */
+        .field-group { margin-bottom: 20px; }
+        .field-group:last-child { margin-bottom: 0; }
+        .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+        @media (max-width: 600px) { .field-row { grid-template-columns: 1fr; } }
+
+        label { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 6px; color: var(--text-primary); }
+        label .required { color: #ef4444; margin-left: 2px; }
+        label .optional { color: var(--text-muted); font-weight: 400; font-size: 0.8rem; }
+        .field-hint { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+
+        input[type="text"], input[type="email"], input[type="url"], input[type="tel"], textarea, select {
+            width: 100%; padding: 10px 14px;
+            border: 1px solid var(--border-color); border-radius: var(--radius-sm);
+            font-family: inherit; font-size: 0.9rem; color: var(--text-primary);
+            background: var(--bg-primary); transition: border-color 0.2s, box-shadow 0.2s; outline: none;
+        }
+        input:focus, textarea:focus, select:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(253,79,108,0.1); }
+        textarea { resize: vertical; min-height: 100px; }
+
+        .option-group { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+        .option-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 14px; border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm); cursor: pointer; transition: all 0.15s;
+        }
+        .option-item:hover { border-color: var(--brand-accent); background: var(--bg-section); }
+        .option-item input[type="radio"], .option-item input[type="checkbox"] { accent-color: var(--brand-accent); width: 16px; height: 16px; }
+        .option-item label { margin-bottom: 0; cursor: pointer; font-weight: 400; }
+
+        /* Step navigation buttons */
+        .step-buttons {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border-color);
+        }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 28px; border-radius: var(--radius-sm);
+            font-family: inherit; font-size: 0.9rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s; border: none;
+        }
+        .btn-primary {
+            background: var(--brand-accent); color: #fff;
+        }
+        .btn-primary:hover { background: var(--brand-accent-light); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(253,79,108,0.3); }
+        .btn-secondary {
+            background: var(--bg-section); color: var(--text-primary); border: 1px solid var(--border-color);
+        }
+        .btn-secondary:hover { border-color: var(--brand-accent); }
+        .btn-success {
+            background: var(--success-green); color: #fff;
+        }
+        .btn-success:hover { background: #16a34a; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .step-status {
+            font-size: 0.85rem; color: var(--text-muted); text-align: center;
+        }
+        .step-status.submitted { color: var(--success-green); font-weight: 500; }
+
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            padding: 12px 24px; border-radius: var(--radius-sm);
+            font-size: 0.9rem; font-weight: 500; z-index: 1000;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            opacity: 0; transition: all 0.3s ease;
+        }
+        .toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast.success { border-color: var(--success-green); }
+        .toast.error { border-color: var(--error-red); }
+
+        /* Completion screen */
+        .completion-screen { text-align: center; padding: 60px 24px; }
+        .completion-screen .icon { font-size: 56px; margin-bottom: 16px; }
+        .completion-screen h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; color: var(--brand-black); }
+        .completion-screen p { color: var(--text-secondary); max-width: 500px; margin: 0 auto 8px; }
+        .completion-summary { margin-top: 32px; text-align: left; max-width: 400px; margin-left: auto; margin-right: auto; }
+        .completion-summary .item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
+        .completion-summary .item .status { font-weight: 600; }
+        .completion-summary .item .status.done { color: var(--success-green); }
+        .completion-summary .item .status.pending { color: var(--text-muted); }
+
+        /* Footer */
+        .page-footer { text-align: center; margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; }
+        .page-footer a { color: var(--brand-accent); text-decoration: none; }
+
+        /* Alert boxes */
+        .alert {
+            padding: 12px 16px; border-radius: var(--radius-sm); margin-bottom: 16px;
+            border: 1px solid var(--border-color); display: flex; align-items: flex-start; gap: 8px;
+        }
+        .alert.info { background: #eff6ff; border-color: #3b82f6; color: #1e40af; }
+        .alert.warning { background: #fffbeb; border-color: #f59e0b; color: #92400e; }
+        .alert .icon { font-size: 16px; margin-top: 2px; }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☀️</button>
+<div class="toast" id="toast"></div>
+
+<button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Menu">☰</button>
+<div class="side-nav-overlay" id="sideNavOverlay"></div>
+
+<nav class="side-nav" id="sideNav">
+    <div class="side-nav-brand">
+        <h2>CompanyCam Local SEO</h2>
+        <span>Getting Started</span>
+    </div>
+    <ul id="navList">
+        <li><a data-step="0"><span class="nav-icon">👤</span> Contact Info <span class="nav-status current" id="navSt0">1/5</span></a></li>
+        <li><a data-step="1"><span class="nav-icon">🔧</span> Account Setup <span class="nav-status" id="navSt1">2/5</span></a></li>
+        <li><a data-step="2"><span class="nav-icon">🌐</span> WordPress Access <span class="nav-status" id="navSt2">3/5</span></a></li>
+        <li><a data-step="3"><span class="nav-icon">📍</span> Google Business <span class="nav-status" id="navSt3">4/5</span></a></li>
+        <li><a data-step="4"><span class="nav-icon">📋</span> Project Preferences <span class="nav-status" id="navSt4">5/5</span></a></li>
+    </ul>
+    <div class="side-nav-footer">
+        <button class="save-btn" id="saveBtn" type="button">
+            <span id="saveBtnText">💾 Save & Continue Later</span>
+        </button>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="page-header">
+        <h1>CompanyCam Local SEO Automation</h1>
+        <p class="subtitle">Let's get all the information needed to build your automated local SEO system for Air Titan AC Repair.</p>
+        <p class="note">Complete each section and submit it - your progress is saved automatically</p>
+    </div>
+
+    <!-- Step dots -->
+    <div class="step-indicator" id="stepIndicator"></div>
+
+    <!-- STEP 0: Contact Info -->
+    <div class="form-step active" data-step="0">
+        <div class="form-section">
+            <div class="section-header">
+                <div class="section-icon">👤</div>
+                <div>
+                    <div class="section-title">Contact Information</div>
+                    <div class="section-subtitle">Your details and business information</div>
+                </div>
+            </div>
+            <div class="field-row">
+                <div class="field-group">
+                    <label for="clientName">Full Name <span class="required">*</span></label>
+                    <input type="text" id="clientName" name="clientName" placeholder="e.g. Daniel T" required>
+                </div>
+                <div class="field-group">
+                    <label for="clientEmail">Email <span class="required">*</span></label>
+                    <input type="email" id="clientEmail" name="clientEmail" placeholder="you@airtitanacrepair.com" required>
+                </div>
+            </div>
+            <div class="field-row">
+                <div class="field-group">
+                    <label for="businessName">Business Name <span class="required">*</span></label>
+                    <input type="text" id="businessName" name="businessName" placeholder="Air Titan AC Repair" required>
+                </div>
+                <div class="field-group">
+                    <label for="businessWebsite">Website URL <span class="required">*</span></label>
+                    <input type="url" id="businessWebsite" name="businessWebsite" placeholder="https://airtitanacrepair.com" required>
+                </div>
+            </div>
+            <div class="field-group">
+                <label for="clientPhone">Phone Number <span class="optional">(optional)</span></label>
+                <input type="tel" id="clientPhone" name="clientPhone" placeholder="+1 555 123 4567">
+            </div>
+            <div class="field-group">
+                <label for="preferredContact">Preferred Communication Method <span class="required">*</span></label>
+                <div class="option-group">
+                    <div class="option-item">
+                        <input type="radio" id="contactFiverr" name="preferredContact" value="fiverr" checked>
+                        <label for="contactFiverr">Fiverr messaging</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="contactEmail" name="preferredContact" value="email">
+                        <label for="contactEmail">Email updates</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="contactBoth" name="preferredContact" value="both">
+                        <label for="contactBoth">Both Fiverr and email</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="step-buttons">
+            <div></div>
+            <div style="display:flex;align-items:center;gap:12px;">
+                <span class="step-status" id="status0"></span>
+                <button type="button" class="btn btn-primary" data-action="submit-step">Submit & Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STEP 1: Account Setup -->
+    <div class="form-step" data-step="1">
+        <div class="form-section">
+            <div class="section-header">
+                <div class="section-icon">🔧</div>
+                <div>
+                    <div class="section-title">Account Setup</div>
+                    <div class="section-subtitle">Platform accounts and API credentials</div>
+                </div>
+            </div>
+            
+            <div class="alert info">
+                <span class="icon">ℹ️</span>
+                <div>
+                    <strong>Important:</strong> Please purchase the required tools (CompanyCam Elite, Make.com Pro, Metricool Advanced) before providing credentials. We'll verify all platforms are properly configured before starting development.
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label>CompanyCam Account Status <span class="required">*</span></label>
+                <div class="option-group">
+                    <div class="option-item">
+                        <input type="radio" id="companycamPurchased" name="companycamStatus" value="purchased-elite">
+                        <label for="companycamPurchased">✅ Purchased CompanyCam Elite</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="companycamWillPurchase" name="companycamStatus" value="will-purchase">
+                        <label for="companycamWillPurchase">⏳ Will purchase before project starts</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="field-group">
+                <label for="companycamApiKey">CompanyCam API Key <span class="optional">(if purchased)</span></label>
+                <input type="text" id="companycamApiKey" name="companycamApiKey" placeholder="Your CompanyCam API key">
+                <div class="field-hint">Found in CompanyCam Settings → Integrations → API Keys</div>
+            </div>
+
+            <div class="field-group">
+                <label>Make.com Account Status <span class="required">*</span></label>
+                <div class="option-group">
+                    <div class="option-item">
+                        <input type="radio" id="makecomPurchased" name="makecomStatus" value="purchased-pro">
+                        <label for="makecomPurchased">✅ Purchased Make.com Pro (10,000 ops/month)</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="makecomWillPurchase" name="makecomStatus" value="will-purchase">
+                        <label for="makecomWillPurchase">⏳ Will purchase before project starts</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label for="makecomEmail">Make.com Account Email <span class="optional">(if purchased)</span></label>
+                <input type="email" id="makecomEmail" name="makecomEmail" placeholder="Account email for Make.com">
+                <div class="field-hint">We'll need access to your Make.com account to build the scenario</div>
+            </div>
+
+            <div class="field-group">
+                <label>Metricool Account Status <span class="required">*</span></label>
+                <div class="option-group">
+                    <div class="option-item">
+                        <input type="radio" id="metricoolPurchased" name="metricoolStatus" value="purchased-advanced">
+                        <label for="metricoolPurchased">✅ Purchased Metricool Advanced (API access)</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="metricoolWillPurchase" name="metricoolStatus" value="will-purchase">
+                        <label for="metricoolWillPurchase">⏳ Will purchase before project starts</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label for="metricoolApiToken">Metricool API Token <span class="optional">(if purchased)</span></label>
+                <input type="text" id="metricoolApiToken" name="metricoolApiToken" placeholder="Your Metricool API token">
+                <div class="field-hint">Found in Metricool Account Settings → API tab</div>
+            </div>
+        </div>
+        <div class="step-buttons">
+            <button type="button" class="btn btn-secondary" data-action="prev">← Back</button>
+            <div style="display:flex;align-items:center;gap:12px;">
+                <span class="step-status" id="status1"></span>
+                <button type="button" class="btn btn-primary" data-action="submit-step">Submit & Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STEP 2: WordPress Access -->
+    <div class="form-step" data-step="2">
+        <div class="form-section">
+            <div class="section-header">
+                <div class="section-icon">🌐</div>
+                <div>
+                    <div class="section-title">WordPress Access</div>
+                    <div class="section-subtitle">Admin access for Service Areas page and schema setup</div>
+                </div>
+            </div>
+
+            <div class="alert warning">
+                <span class="icon">⚠️</span>
+                <div>
+                    <strong>Security Note:</strong> We'll need admin access to create the Service Areas page and add schema markup. You can revoke access after project completion.
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label for="wpLoginUrl">WordPress Login URL <span class="required">*</span></label>
+                <input type="url" id="wpLoginUrl" name="wpLoginUrl" placeholder="https://airtitanacrepair.com/wp-admin" required>
+            </div>
+
+            <div class="field-group">
+                <label>Preferred Access Method <span class="required">*</span></label>
+                <div class="option-group">
+                    <div class="option-item">
+                        <input type="radio" id="wpInvite" name="wpAccessMethod" value="invite" checked>
+                        <label for="wpInvite">Send me an admin invitation (recommended)</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="wpCredentials" name="wpAccessMethod" value="credentials">
+                        <label for="wpCredentials">I'll provide temporary admin credentials</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field-group" id="inviteEmailField">
+                <label for="inviteEmail">Email for Admin Invitation <span class="optional">(if using invitation method)</span></label>
+                <input type="email" id="inviteEmail" name="inviteEmail" placeholder="developer@tigermedia.co.il">
+                <div class="field-hint">We'll send you the exact email to invite</div>
+            </div>
+
+            <div class="field-group" id="wpCredentialsField" style="display:none;">
+                <label for="wpCredentials">Temporary Admin Credentials <span class="optional">(if providing credentials)</span></label>
+                <textarea id="wpCredentials" name="wpCredentials" placeholder="Username: tempuser&#10;Password: temp123456&#10;&#10;Note: Please create a temporary admin user" rows="4"></textarea>
+            </div>
+
+            <div class="field-group">
+                <label>Page Builder <span class="required">*</span></label>
+                <div class="option-group">
+                    <div class="option-item">
+                        <input type="radio" id="builderElementor" name="pageBuilder" value="elementor" checked>
+                        <label for="builderElementor">Elementor (as mentioned)</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="builderGutenberg" name="pageBuilder" value="gutenberg">
+                        <label for="builderGutenberg">WordPress Block Editor (Gutenberg)</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="builderOther" name="pageBuilder" value="other">
+                        <label for="builderOther">Other page builder</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field-group" id="otherBuilderField" style="display:none;">
+                <label for="otherBuilder">Specify Page Builder</label>
+                <input type="text" id="otherBuilder" name="otherBuilder" placeholder="e.g. Divi, WPBakery, etc.">
+            </div>
+
+            <div class="field-group">
+                <label for="serviceAreasPage">Service Areas Page Status <span class="required">*</span></label>
+                <div class="option-group">
+                    <div class="option-item">
+                        <input type="radio" id="pageCreated" name="serviceAreasPage" value="created" checked>
+                        <label for="pageCreated">✅ Already created with slug /service-areas/</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="pageNeedCreate" name="serviceAreasPage" value="need-create">
+                        <label for="pageNeedCreate">❌ Please create it for me</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="step-buttons">
+            <button type="button" class="btn btn-secondary" data-action="prev">← Back</button>
+            <div style="display:flex;align-items:center;gap:12px;">
+                <span class="step-status" id="status2"></span>
+                <button type="button" class="btn btn-primary" data-action="submit-step">Submit & Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STEP 3: Google Business -->
+    <div class="form-step" data-step="3">
+        <div class="form-section">
+            <div class="section-header">
+                <div class="section-icon">📍</div>
+                <div>
+                    <div class="section-title">Google Business Profile</div>
+                    <div class="section-subtitle">GBP verification and Metricool connection details</div>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label for="gbpVerified">Google Business Profile Status <span class="required">*</span></label>
+                <div class="option-group">
+                    <div class="option-item">
+                        <input type="radio" id="gbpVerified" name="gbpStatus" value="verified" checked>
+                        <label for="gbpVerified">✅ Verified and active</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="gbpPending" name="gbpStatus" value="pending">
+                        <label for="gbpPending">⏳ Pending verification</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="gbpNotSetup" name="gbpStatus" value="not-setup">
+                        <label for="gbpNotSetup">❌ Not set up yet</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label for="gbpUrl">Google Business Profile URL <span class="optional">(if verified)</span></label>
+                <input type="url" id="gbpUrl" name="gbpUrl" placeholder="https://g.page/air-titan-ac-repair">
+                <div class="field-hint">This is the public link to your business listing</div>
+            </div>
+
+            <div class="field-group">
+                <label for="websiteLinked">Website Link on GBP <span class="required">*</span></label>
+                <div class="option-group">
+                    <div class="option-item">
+                        <input type="radio" id="websiteLinked" name="websiteLinked" value="linked" checked>
+                        <label for="websiteLinked">✅ airtitanacrepair.com is linked to GBP</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="websiteNotLinked" name="websiteLinked" value="not-linked">
+                        <label for="websiteNotLinked">❌ Need to link the website</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label for="metricoolConnected">Metricool GBP Connection <span class="optional">(if Metricool purchased)</span></label>
+                <div class="option-group">
+                    <div class="option-item">
+                        <input type="radio" id="metricoolConnected" name="metricoolConnected" value="connected">
+                        <label for="metricoolConnected">✅ GBP connected to Metricool</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="metricoolNotConnected" name="metricoolConnected" value="not-connected">
+                        <label for="metricoolNotConnected">❌ Need help connecting</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="metricoolUnsure" name="metricoolConnected" value="unsure">
+                        <label for="metricoolUnsure">❓ Not sure / haven't purchased Metricool yet</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label for="serviceAreas">Service Areas <span class="required">*</span></label>
+                <textarea id="serviceAreas" name="serviceAreas" placeholder="List the cities/areas you serve, e.g.:&#10;Phoenix, AZ&#10;Scottsdale, AZ&#10;Tempe, AZ&#10;Mesa, AZ" rows="4" required></textarea>
+                <div class="field-hint">This helps us understand your target market for local SEO</div>
+            </div>
+
+            <div class="field-group">
+                <label for="businessHours">Business Hours <span class="optional">(optional)</span></label>
+                <textarea id="businessHours" name="businessHours" placeholder="Mon-Fri: 8:00 AM - 6:00 PM&#10;Sat: 9:00 AM - 4:00 PM&#10;Sun: Emergency only" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="step-buttons">
+            <button type="button" class="btn btn-secondary" data-action="prev">← Back</button>
+            <div style="display:flex;align-items:center;gap:12px;">
+                <span class="step-status" id="status3"></span>
+                <button type="button" class="btn btn-primary" data-action="submit-step">Submit & Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STEP 4: Project Preferences -->
+    <div class="form-step" data-step="4">
+        <div class="form-section">
+            <div class="section-header">
+                <div class="section-icon">📋</div>
+                <div>
+                    <div class="section-title">Project Preferences</div>
+                    <div class="section-subtitle">Timeline, testing, and final details</div>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label for="projectTimeline">Preferred Timeline <span class="optional">(optional)</span></label>
+                <div class="option-group">
+                    <div class="option-item">
+                        <input type="radio" id="timelineASAP" name="projectTimeline" value="asap">
+                        <label for="timelineASAP">As soon as possible</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="timelineWeek" name="projectTimeline" value="1-week" checked>
+                        <label for="timelineWeek">Within 1 week (as quoted)</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="timelineFlexible" name="projectTimeline" value="flexible">
+                        <label for="timelineFlexible">Flexible - no rush</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label for="expectedVolume">Expected Monthly Showcases <span class="required">*</span></label>
+                <select id="expectedVolume" name="expectedVolume" required>
+                    <option value="">Select range</option>
+                    <option value="5-10">5-10 per month</option>
+                    <option value="10-20">10-20 per month</option>
+                    <option value="20-30" selected>20-30 per month (as discussed)</option>
+                    <option value="30-50">30-50 per month</option>
+                    <option value="50+">50+ per month</option>
+                </select>
+                <div class="field-hint">This affects Make.com operations usage (~15 ops per Showcase)</div>
+            </div>
+
+            <div class="field-group">
+                <label for="testingPreference">Testing Preference <span class="required">*</span></label>
+                <div class="option-group">
+                    <div class="option-item">
+                        <input type="radio" id="testLive" name="testingPreference" value="live" checked>
+                        <label for="testLive">Test with real CompanyCam data</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="testSample" name="testingPreference" value="sample">
+                        <label for="testSample">Use sample data for testing first</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label for="postManagement">Draft Post Management <span class="required">*</span></label>
+                <div class="option-group">
+                    <div class="option-item">
+                        <input type="radio" id="reviewAll" name="postManagement" value="review-all" checked>
+                        <label for="reviewAll">I'll review and publish all drafts manually</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="autoPublish" name="postManagement" value="auto-publish">
+                        <label for="autoPublish">Auto-publish some posts (we can set rules)</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label for="additionalRequests">Additional Features or Modifications <span class="optional">(optional)</span></label>
+                <textarea id="additionalRequests" name="additionalRequests" placeholder="Any specific customizations, additional features, or modifications to the scope?" rows="4"></textarea>
+            </div>
+
+            <div class="field-group">
+                <label for="questionsOrConcerns">Questions or Concerns <span class="optional">(optional)</span></label>
+                <textarea id="questionsOrConcerns" name="questionsOrConcerns" placeholder="Anything you'd like to clarify or discuss before we start?" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="step-buttons">
+            <button type="button" class="btn btn-secondary" data-action="prev">← Back</button>
+            <div style="display:flex;align-items:center;gap:12px;">
+                <span class="step-status" id="status4"></span>
+                <button type="button" class="btn btn-success" data-action="submit-step">Submit Final Section ✓</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Completion Screen -->
+    <div class="form-step" data-step="done" id="completionScreen">
+        <div class="completion-screen">
+            <div class="icon">🎉</div>
+            <h2>All Set!</h2>
+            <p>Thank you for completing the getting started form. I have everything needed to begin building your CompanyCam Local SEO automation system.</p>
+            <p style="font-size:0.85rem;">If you need to update any section, just click it in the side menu. I'll review your submission and start Milestone 1 setup.</p>
+            <div class="completion-summary" id="completionSummary"></div>
+        </div>
+    </div>
+
+    <div class="page-footer">
+        <p>Built by <a href="https://tigermedia.co.il" target="_blank">Tiger Media</a> - AI & Automation Agency</p>
+    </div>
+</div>
+
+<script data-cfasync="false">
+/* ====== THEME ====== */
+(function(){
+    var s=localStorage.getItem('companycam-theme');
+    if(s==='dark')document.documentElement.setAttribute('data-theme','dark');
+    document.addEventListener('DOMContentLoaded',function(){
+        var b=document.getElementById('themeToggle');
+        function u(){b.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'🌙':'☀️';}
+        u();
+        b.addEventListener('click',function(){
+            var d=document.documentElement.getAttribute('data-theme')==='dark';
+            if(d){document.documentElement.removeAttribute('data-theme');localStorage.setItem('companycam-theme','light');}
+            else{document.documentElement.setAttribute('data-theme','dark');localStorage.setItem('companycam-theme','dark');}
+            u();
+        });
+    });
+})();
+</script>
+
+<script data-cfasync="false">
+/* ====== CONDITIONAL FIELDS ====== */
+(function(){
+    document.addEventListener('DOMContentLoaded',function(){
+        // WordPress access method
+        document.querySelectorAll('input[name="wpAccessMethod"]').forEach(function(r){
+            r.addEventListener('change',function(){
+                document.getElementById('inviteEmailField').style.display=this.value==='invite'?'block':'none';
+                document.getElementById('wpCredentialsField').style.display=this.value==='credentials'?'block':'none';
+            });
+        });
+        
+        // Page builder
+        document.querySelectorAll('input[name="pageBuilder"]').forEach(function(r){
+            r.addEventListener('change',function(){
+                document.getElementById('otherBuilderField').style.display=this.value==='other'?'block':'none';
+            });
+        });
+    });
+})();
+</script>
+
+<script data-cfasync="false">
+/* ====== MULTI-STEP WIZARD ENGINE ====== */
+(function(){
+    'use strict';
+
+    var TOTAL_STEPS = 5;
+    var WEBHOOK = 'https://n8n.tigermedia.co.il/webhook/form-submit';
+    var STORAGE_KEY = 'companycam_getting_started_draft';
+    var STATE_KEY = 'companycam_getting_started_state';
+    var STEP_NAMES = ['Contact Info','Account Setup','WordPress Access','Google Business','Project Preferences'];
+
+    var currentStep = 0;
+    var stepState = {}; // {0: 'submitted', 1: 'submitted', ...}
+
+    // Load state
+    function loadState(){
+        try{ stepState = JSON.parse(localStorage.getItem(STATE_KEY)||'{}'); }catch(e){ stepState={}; }
+        // Find first incomplete step
+        for(var i=0;i<TOTAL_STEPS;i++){
+            if(stepState[i]!=='submitted'){ currentStep=i; return; }
+        }
+        currentStep = TOTAL_STEPS; // all done
+    }
+
+    // Save draft
+    function saveDraft(){
+        var data={};
+        document.querySelectorAll('input,textarea,select').forEach(function(el){
+            if(!el.name||el.disabled)return;
+            if(el.type==='checkbox'){data[el.name]=el.checked;}
+            else if(el.type==='radio'){if(el.checked)data[el.name]=el.value;}
+            else{data[el.name]=el.value;}
+        });
+        localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+    }
+
+    function restoreDraft(){
+        try{
+            var saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}');
+            Object.keys(saved).forEach(function(key){
+                var els=document.querySelectorAll('[name="'+key+'"]');
+                if(!els.length)return;
+                if(els[0].type==='radio'){
+                    els.forEach(function(r){r.checked=(r.value===saved[key]);});
+                }else if(els[0].type==='checkbox'){
+                    els[0].checked=saved[key];
+                }else{
+                    els[0].value=saved[key];
+                }
+            });
+            // Trigger conditionals
+            document.querySelectorAll('input[name="wpAccessMethod"]:checked, input[name="pageBuilder"]:checked').forEach(function(r){r.dispatchEvent(new Event('change'));});
+        }catch(e){}
+    }
+
+    // Collect data for a specific step
+    function collectStepData(stepIdx){
+        var stepEl = document.querySelector('.form-step[data-step="'+stepIdx+'"]');
+        if(!stepEl)return {};
+        var data={};
+        stepEl.querySelectorAll('input,textarea,select').forEach(function(el){
+            if(!el.name||el.disabled)return;
+            if(el.type==='checkbox'){data[el.name]=el.checked;}
+            else if(el.type==='radio'){if(el.checked)data[el.name]=el.value;}
+            else{data[el.name]=el.value;}
+        });
+        data._submittedAt=new Date().toISOString();
+        data._formId='companycam-getting-started';
+        data._section=STEP_NAMES[stepIdx];
+        data._sectionIndex=stepIdx;
+        data._projectType='CompanyCam Local SEO Automation';
+        data._clientBusiness='Air Titan AC Repair';
+        return data;
+    }
+
+    // Send to webhook
+    function submitStep(stepIdx, btn){
+        var data = collectStepData(stepIdx);
+        if(btn){btn.disabled=true;btn.textContent='Submitting...';}
+
+        var payload=JSON.stringify({form:'companycam-getting-started',section:STEP_NAMES[stepIdx],sectionIndex:stepIdx,data:data});
+
+        fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:payload})
+        .then(function(r){
+            if(!r.ok)throw new Error('Failed: '+r.status);
+            stepState[stepIdx]='submitted';
+            localStorage.setItem(STATE_KEY,JSON.stringify(stepState));
+            saveDraft();
+            showToast('✅ '+STEP_NAMES[stepIdx]+' submitted!','success');
+            updateUI();
+            // Move to next
+            if(stepIdx < TOTAL_STEPS-1){
+                goToStep(stepIdx+1);
+            }else{
+                // Check if all done
+                var allDone=true;
+                for(var i=0;i<TOTAL_STEPS;i++){if(stepState[i]!=='submitted'){allDone=false;break;}}
+                if(allDone) goToStep('done');
+                else{
+                    // Find first incomplete
+                    for(var j=0;j<TOTAL_STEPS;j++){if(stepState[j]!=='submitted'){goToStep(j);break;}}
+                }
+            }
+        })
+        .catch(function(err){
+            showToast('⚠️ Error submitting - your data is saved locally. Try again.','error');
+            console.error('Submission error:', err);
+        })
+        .finally(function(){
+            if(btn){btn.disabled=false;btn.textContent=stepIdx===TOTAL_STEPS-1?'Submit Final Section ✓':'Submit & Next →';}
+        });
+    }
+
+    // Navigation
+    function goToStep(idx){
+        document.querySelectorAll('.form-step').forEach(function(s){s.classList.remove('active');});
+        var target = document.querySelector('.form-step[data-step="'+idx+'"]');
+        if(target)target.classList.add('active');
+        if(idx!=='done')currentStep=parseInt(idx);
+        window.scrollTo({top:0,behavior:'smooth'});
+        updateUI();
+    }
+
+    // Toast
+    function showToast(msg,type){
+        var t=document.getElementById('toast');
+        t.textContent=msg;
+        t.className='toast '+(type||'')+' visible';
+        setTimeout(function(){t.classList.remove('visible');},3000);
+    }
+
+    // Update all UI elements
+    function updateUI(){
+        // Step dots
+        var indicator=document.getElementById('stepIndicator');
+        var html='';
+        for(var i=0;i<TOTAL_STEPS;i++){
+            var cls='step-dot';
+            if(stepState[i]==='submitted')cls+=' done';
+            else if(i===currentStep)cls+=' active';
+            if(i>0)html+='<div class="step-line'+(stepState[i-1]==='submitted'?' done':'')+'"></div>';
+            html+='<div class="'+cls+'" data-goto="'+i+'">'+(stepState[i]==='submitted'?'':i+1)+'</div>';
+        }
+        indicator.innerHTML=html;
+        // Re-bind dot clicks
+        indicator.querySelectorAll('.step-dot').forEach(function(dot){
+            dot.addEventListener('click',function(){goToStep(this.getAttribute('data-goto'));});
+        });
+
+        // Side nav
+        document.querySelectorAll('#navList a[data-step]').forEach(function(a){
+            var s=parseInt(a.getAttribute('data-step'));
+            var st=document.getElementById('navSt'+s);
+            a.classList.remove('active','completed');
+            if(s===currentStep)a.classList.add('active');
+            if(stepState[s]==='submitted'){
+                a.classList.add('completed');
+                st.textContent='✓';st.className='nav-status done';
+            }else if(s===currentStep){
+                st.textContent=(s+1)+'/'+TOTAL_STEPS;st.className='nav-status current';
+            }else{
+                st.textContent=(s+1)+'/'+TOTAL_STEPS;st.className='nav-status';
+            }
+        });
+
+        // Progress bar
+        var done=0;
+        for(var j=0;j<TOTAL_STEPS;j++){if(stepState[j]==='submitted')done++;}
+        document.getElementById('progressFill').style.width=Math.round((done/TOTAL_STEPS)*100)+'%';
+
+        // Step statuses
+        for(var k=0;k<TOTAL_STEPS;k++){
+            var statusEl=document.getElementById('status'+k);
+            if(statusEl){
+                if(stepState[k]==='submitted'){
+                    statusEl.textContent='✅ Submitted';statusEl.className='step-status submitted';
+                }else{
+                    statusEl.textContent='';statusEl.className='step-status';
+                }
+            }
+        }
+
+        // Completion summary
+        var summary=document.getElementById('completionSummary');
+        if(summary){
+            var sh='';
+            for(var m=0;m<TOTAL_STEPS;m++){
+                var isDone=stepState[m]==='submitted';
+                sh+='<div class="item"><span>'+STEP_NAMES[m]+'</span><span class="status '+(isDone?'done':'pending')+'">'+(isDone?'✓ Submitted':'Pending')+'</span></div>';
+            }
+            summary.innerHTML=sh;
+        }
+    }
+
+    // Init
+    document.addEventListener('DOMContentLoaded',function(){
+        loadState();
+        restoreDraft();
+
+        // Auto-save on input
+        document.addEventListener('input',function(){clearTimeout(window._saveTimer);window._saveTimer=setTimeout(saveDraft,1000);});
+        document.addEventListener('change',saveDraft);
+
+        // Button handlers
+        document.querySelectorAll('[data-action="submit-step"]').forEach(function(btn){
+            btn.addEventListener('click',function(){
+                var stepEl=this.closest('.form-step');
+                var idx=parseInt(stepEl.getAttribute('data-step'));
+                submitStep(idx,this);
+            });
+        });
+        document.querySelectorAll('[data-action="prev"]').forEach(function(btn){
+            btn.addEventListener('click',function(){
+                var stepEl=this.closest('.form-step');
+                var idx=parseInt(stepEl.getAttribute('data-step'));
+                if(idx>0)goToStep(idx-1);
+            });
+        });
+
+        // Side nav clicks
+        document.querySelectorAll('#navList a[data-step]').forEach(function(a){
+            a.addEventListener('click',function(){goToStep(this.getAttribute('data-step'));});
+        });
+
+        // Mobile nav
+        var mobileToggle=document.getElementById('mobileNavToggle');
+        var sideNav=document.getElementById('sideNav');
+        var overlay=document.getElementById('sideNavOverlay');
+        if(mobileToggle){
+            mobileToggle.addEventListener('click',function(){sideNav.classList.toggle('open');overlay.classList.toggle('open');});
+        }
+        if(overlay){
+            overlay.addEventListener('click',function(){sideNav.classList.remove('open');overlay.classList.remove('open');});
+        }
+        document.querySelectorAll('#navList a').forEach(function(a){
+            a.addEventListener('click',function(){sideNav.classList.remove('open');overlay.classList.remove('open');});
+        });
+
+        // Save button
+        var saveBtn=document.getElementById('saveBtn');
+        if(saveBtn){
+            saveBtn.addEventListener('click',function(){
+                saveDraft();
+                document.getElementById('saveBtnText').textContent='✅ Saved!';
+                saveBtn.classList.add('saved');
+                showToast('💾 Progress saved - you can close this tab and come back anytime','success');
+                setTimeout(function(){document.getElementById('saveBtnText').textContent='💾 Save & Continue Later';saveBtn.classList.remove('saved');},3000);
+            });
+        }
+
+        // Show correct step
+        if(currentStep>=TOTAL_STEPS){
+            // All done - check
+            var allDone=true;
+            for(var i=0;i<TOTAL_STEPS;i++){if(stepState[i]!=='submitted'){allDone=false;currentStep=i;break;}}
+            if(allDone)goToStep('done');
+            else goToStep(currentStep);
+        }else{
+            goToStep(currentStep);
+        }
+
+        updateUI();
+    });
+})();
+</script>
+
+</body>
+</html>
