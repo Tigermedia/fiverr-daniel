@@ -31,9 +31,11 @@ To start **Milestone 1: Setup & Account Configuration**, I need the following:
 - [ ] Verify I can edit/add columns for tracking (Last Used dates, Usage Count)
 - [ ] Add Review Queue sheet for automation output logging
 
-## 3. WordPress Access (for schema delivery)
-- [ ] WordPress admin access OR temporary admin credentials
-- [ ] I only need to add JSON-LD schema code to footer (5 minutes)
+## 3. WordPress.com Access & Plan Verification ⚠️
+- ✅ **WordPress.com admin invitation received**
+- [ ] **CRITICAL**: Verify WordPress.com plan type (Business/eCommerce required for schema)
+- [ ] Check if custom HTML/code injection is available in footer/header
+- [ ] Alternative: Schema delivery via custom HTML blocks or plugin if footer restricted
 - [ ] Can revoke access immediately after schema installation
 
 ## 4. Notification Email
