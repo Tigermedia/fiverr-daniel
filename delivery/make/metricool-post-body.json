@@ -1,0 +1,23 @@
+{
+  "text": "{{13.result.postText}}",
+  "draft": true,
+  "publicationDate": {
+    "dateTime": "{{formatDate(now; \"YYYY-MM-DD\")}}T{{formatDate(now; \"HH:mm:ss\")}}",
+    "timezone": "America/Chicago"
+  },
+  "providers": [
+    {
+      "id": "accounts/117077766338555713257/locations/6579302660743071083",
+      "network": "gmb"
+    }
+  ],
+  "media": [
+    {
+      "type": "image",
+      "url": "{{13.result.photoUrl}}"
+    }
+  ],
+  "gmbData": {
+    "type": "publication"
+  }
+}
