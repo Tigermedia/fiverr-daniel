@@ -22,17 +22,15 @@ The complete automation is live and tested. When a new photo is uploaded to Comp
 
 ### Technical Setup Completed
 
-| Component | Status | Details |
-|-----------|--------|---------|
-| CompanyCam API | ✅ Connected | Token verified, webhook registered |
-| CompanyCam Webhook | ✅ Active | Fires on every new photo upload |
-| Make.com Scenario | ✅ Running | 7-module pipeline, scenario ID 4170018 |
-| Google Sheets (Neighborhoods) | ✅ Integrated | Reading 50+ neighborhoods with lat/lon/radius |
-| Google Sheets (Keywords) | ✅ Integrated | Reading 8 keyword buckets (80 keywords) |
-| Haversine Geo-Matching | ✅ Working | Matches photos to nearest neighborhood by GPS |
-| Keyword Rotation | ✅ Working | Rotates through keyword buckets automatically |
-| Metricool GBP Integration | ✅ Connected | Native module, creates draft posts |
-| Metricool Draft Posts | ✅ Verified | Posts appear in Metricool scheduler as drafts |
+- ✅ **CompanyCam API** - Token verified, webhook registered
+- ✅ **CompanyCam Webhook** - Fires on every new photo upload
+- ✅ **Make.com Scenario** - 7-module pipeline, scenario ID 4170018
+- ✅ **Google Sheets (Neighborhoods)** - Reading 50+ neighborhoods with lat/lon/radius
+- ✅ **Google Sheets (Keywords)** - Reading 8 keyword buckets (80 keywords)
+- ✅ **Haversine Geo-Matching** - Matches photos to nearest neighborhood by GPS
+- ✅ **Keyword Rotation** - Rotates through keyword buckets automatically
+- ✅ **Metricool GBP Integration** - Native module, creates draft posts
+- ✅ **Metricool Draft Posts** - Posts appear in Metricool scheduler as drafts
 
 ### Scenario Architecture
 
@@ -57,12 +55,12 @@ CompanyCam Photo Upload
 ### Haversine Code Module (Module 13)
 
 The code module performs:
-- **GPS Priority**: Uses photo GPS first, falls back to project coordinates
-- **Distance Calculation**: Haversine formula (miles) against all neighborhoods
-- **Radius Matching**: Each neighborhood has a configurable radius
-- **Best Match**: Selects closest neighborhood within radius
-- **Orphan Handling**: Defaults to "Greater Baton Rouge" if no match
-- **Keyword Rotation**: Cycles through 8 keyword buckets based on date
+- **GPS Priority** - Uses photo GPS first, falls back to project coordinates
+- **Distance Calculation** - Haversine formula (miles) against all neighborhoods
+- **Radius Matching** - Each neighborhood has a configurable radius
+- **Best Match** - Selects closest neighborhood within radius
+- **Orphan Handling** - Defaults to "Greater Baton Rouge" if no match
+- **Keyword Rotation** - Cycles through 8 keyword buckets based on date
 
 **Output format:**
 ```json
@@ -79,25 +77,23 @@ The code module performs:
 ### GBP Draft Post Format
 
 Each draft post in Metricool includes:
-- **Text**: `[Keyword] in [Neighborhood] | Air Titan AC Repair LLC`
-- **Image**: Original CompanyCam photo
-- **Network**: Google Business Profile (GBP)
-- **Status**: Draft (you publish manually after review)
-- **Location**: Your GBP profile (accounts/117077766338555713257/locations/6579302660743071083)
+- **Text** - `[Keyword] in [Neighborhood] | Air Titan AC Repair LLC`
+- **Image** - Original CompanyCam photo
+- **Network** - Google Business Profile (GBP)
+- **Status** - Draft (you publish manually after review)
+- **Location** - Your GBP profile
 
 ---
 
 ## Key IDs & Access
 
-| Resource | ID/URL |
-|----------|--------|
-| Make.com Scenario | 4170018 |
-| Webhook URL | `https://hook.us2.make.com/vqlga5dmnpbu9t6p79visorz69w9bl1r` |
-| CompanyCam Webhook ID | 197854 |
-| Metricool Blog ID | 5846447 |
-| GBP Location | accounts/117077766338555713257/locations/6579302660743071083 |
-| Neighborhoods Sheet | 1JZ2-A7RkbHpUCMq7Rfg17Yz73b_BgrikVuvE6j76Ekw |
-| Keyword Buckets Sheet | 1kOPM2n-f8_VltxDBOT6OQPZdPU--BtDHwE822B9QixI |
+- **Make.com Scenario** - 4170018
+- **Webhook URL** - `https://hook.us2.make.com/vqlga5dmnpbu9t6p79visorz69w9bl1r`
+- **CompanyCam Webhook ID** - 197854
+- **Metricool Blog ID** - 5846447
+- **GBP Location** - accounts/117077766338555713257/locations/6579302660743071083
+- **Neighborhoods Sheet** - 1JZ2-A7RkbHpUCMq7Rfg17Yz73b_BgrikVuvE6j76Ekw
+- **Keyword Buckets Sheet** - 1kOPM2n-f8_VltxDBOT6OQPZdPU--BtDHwE822B9QixI
 
 ---
 
