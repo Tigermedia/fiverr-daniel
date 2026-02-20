@@ -55,7 +55,7 @@ for (const r of n) {
   const d = hav(lat, lng, la, lo);
   if (d <= ra && d < bd) {
     bd = d;
-    best = { name: nm, distance: d.toFixed(3) };
+    best = { name: nm, distance: d.toFixed(3), city: (r[0] || "").trim(), gbpId: (r[1] || "").trim() };
   }
 }
 
@@ -64,11 +64,40 @@ const bi = (new Date().getDate() % Math.max(bH.length - 2, 1)) + 2;
 const ri = Math.floor(new Date().getDate() / 7) % Math.max(kR.length, 1);
 const kw = (kR[ri] && kR[ri][bi]) || "AC Repair";
 
+// Extract unique GBP IDs from all neighborhoods (for multi-location posting)
+const gbpMap = {};
+for (const r of n) {
+  const city = (r[0] || "").trim();
+  const gbpId = (r[1] || "").trim();
+  if (city && gbpId && !gbpMap[city]) {
+    gbpMap[city] = gbpId;
+  }
+}
+
+// Build array of GBP targets for iterator (Metricool format)
+const ACCOUNT_ID = "117077766338555713257";
+const gbpTargets = Object.entries(gbpMap).map(([city, gbpId]) => ({
+  city: city,
+  gbpId: `accounts/${ACCOUNT_ID}/locations/${gbpId}`,
+  hasGbp: true
+}));
+
+// Also include cities without GBP IDs (for logging/awareness)
+for (const r of n) {
+  const city = (r[0] || "").trim();
+  if (city && !gbpMap[city]) {
+    gbpMap[city] = null;
+  }
+}
+
 return {
   neighborhood: nb,
   keyword: kw,
   distance: best ? best.distance : "N/A",
   isOrphan: !best,
+  matchedCity: best ? best.city : "BATON ROUGE",
+  matchedGbpId: best ? best.gbpId : "",
   postText: `${kw} in ${nb} | Air Titan AC Repair LLC`,
-  photoUrl: input.photoUrl || ""
+  photoUrl: input.photoUrl || "",
+  gbpTargets: gbpTargets
 };
